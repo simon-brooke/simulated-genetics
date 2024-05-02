@@ -1,7 +1,7 @@
 (ns cc.journeyman.simulated-genetics.genome
   "lightweight simulation of a genome."
   (:require [cc.journeyman.simulated-genetics.utils :refer [bits-in-genome create-mask long-from-binary-string]]
-            [clojure.math :refer [pow]] 
+            [clojure.math :refer [pow]]
             [taoensso.telemere :refer [error! trace!]]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -27,52 +27,71 @@
 ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(def genome-mask
+  "A mask which selects just the bits we're interested in from a long."
+  (long (dec (pow 2 bits-in-genome))))
 
-(defmacro rand-genome 
+(def gender-bit
+  "The bit that encodes for gender"
+  25)
+
+(defmacro rand-genome
   "Create a random genome."
   []
-  `(long (rand (dec (pow 2 bits-in-genome))))) ;;Long/MAX_VALUE))) ;;
+  `(long (rand (dec (pow 2 bits-in-genome)))))
 
-(defn create-genome 
+(defn create-genome
   "Create a new genome; if `father` and `mother` are passed, the result will 
    comprise bits taken randomly from those genomes."
   ([]
    (create-genome (rand-genome) (rand-genome)))
   ([^Long father ^Long mother]
    (let [mask (rand-genome)]
-     (trace! (format "Parents are %s, %s; mask is %s" 
-                     (Long/toBinaryString father) 
-                     (Long/toBinaryString mother) 
+     (trace! (format "Parents are %s, %s; mask is %s"
+                     (Long/toBinaryString father)
+                     (Long/toBinaryString mother)
                      (Long/toBinaryString mask)))
-     (bit-or (bit-and father mask) (bit-and (bit-not mother) mask)))))
+     ;; TODO: cycling through a string is inefficient
+     (long-from-binary-string
+      (apply str
+             (map #(if (bit-test (if (bit-test mask %) mother father) %) "1" "0")
+                  (reverse (range bits-in-genome))))))))
 
 (defn extract-bits
   "Extract, as an integer left-shifted by `start`, those bits from `g` indexed
    from `start` (inclusive) to `end` (exclusive)."
   [^Long g ^Long start ^Long end]
   (let [mask (trace! (create-mask start end))]
-    (bit-shift-right (bit-and g mask) (- bits-in-genome end))))
+    (long (bit-shift-right (bit-and g mask) (- bits-in-genome end)))))
 
 (defmacro ethnically-biased-feature-index
+  "Some feature values are associated with particular ethnicities."
   [genome start end]
   `(+ (extract-bits ~genome ~start ~end)
-      (if (bit-test ~genome 3) 
-        (int (pow (- ~end ~start) 2)) 
+      (if (bit-test ~genome 3)
+        (int (pow (- ~end ~start) 2))
         0)))
 
+(defn male?
+  "`true` if this genome is male."
+  [genome]
+  (bit-test genome gender-bit))
 
 (defn expand-genome
-   [^Long genome]
-  {:ethnic-type (extract-bits genome 0 4)
-   :skin-tone (+ (extract-bits genome 4 7) (if (bit-test genome 3) 4 0) 2)
-   :freckles? (= (extract-bits genome 8 10) 3)
-   :hair-colour (nth [:blonde :red :russet :cognac :chestnut :coffee :dark-brown :black]
-                     (ethnically-biased-feature-index genome 11 13))
-   :eye-colour (nth [:blue :hazel :russet :cognac :chestnut :coffee :dark-brown :black]
-                    (ethnically-biased-feature-index genome 14 16))
-   :height (+ 150 (* (extract-bits genome 17 20) 6))
-   :robustness (extract-bits genome 21 23)
-   :aging (extract-bits genome 24 27)
-   :gender (if (bit-test genome 27) :male :female)
-   ;; face stuff
-   })
+  [^Long genome]
+  (let [skin-tone (ethnically-biased-feature-index genome 4 8)]
+    {:ethnic-type (extract-bits genome 0 4)
+     :skin-tone (ethnically-biased-feature-index genome 4 8)
+     :freckles? (= skin-tone 1)
+     :hair-colour (nth [:blonde :red :russet :cognac :chestnut
+                        :coffee :dark-brown :black]
+                       (ethnically-biased-feature-index genome 9 11))
+     :eye-colour (nth [:blue :hazel :russet :cognac :chestnut
+                       :coffee :dark-brown :black]
+                      (ethnically-biased-feature-index genome 12 14))
+     :height (+ 150 (* (extract-bits genome 15 18) (if (male? genome) 6 4))) ;; men are taller
+     :robustness (extract-bits genome 19 21)
+     :aging (extract-bits genome 22 25)
+     :gender (if (male? genome) :male :female)
+   ;; TODO: face stuff
+     }))
