@@ -54,11 +54,17 @@ b. I politely suggest that you might want to examine your own attitudes.
 
 **NOTE:** At this stage none of this works.
 
+#### The Python ecosystem
+
 [MakeHuman](http://www.makehumancommunity.org/) exposes an [API](https://github.com/makehumancommunity/community-plugins-mhapi/blob/master/docs/MHAPI.md) which allows at least many of the morphological changes required by the pseudo-genome to be applied to a human model. 
 
 There's a well regarded library, [libpython-clj](https://www.futurile.net/2020/02/20/python-from-clojure-with-libpython-clj/), which allows calling of Python code from Clojure code. So in theory it should be possible to make this work.
 
 If not, there are other human-model-morphing libraries out there, e.g. [ManuelBastioniLab](https://mb-lab-community.github.io/MB-Lab.github.io/), but they're mainly also in Python. In the worst case, the heavy lifting is in the data, and it might be possible to rewrite the code thatmorphs the data into Clojure. However, development of ManuelBastioniLAB [ceased in 2018](https://www.cgchannel.com/2018/11/manuel-bastioni-to-discontinue-manuel-bastioni-lab/), and although there are forks available on GitHub and elsewhere, none of them seem to be active. 
+
+#### Maud
+
+While things in the Python ecosystem are very polished, getting them to play nicely with Clojure/Java is non-trivial. There's a less-polished but apparently-functional character editor built using jMonkeyEngine frameworks called [Maud](https://github.com/stephengold/Maud). This might be an easier fit.
 
 ## Installation
 
