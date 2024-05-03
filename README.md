@@ -29,7 +29,7 @@ My hunch is that a 64 bit genome is more than sufficient, if we code it carefull
 | Gracility/Robustness | 3    | Slenderness to stockiness of skeleton/armature build, with [000] being very slender and [111] being very broad/heavy. |
 | Age-related change   | 3    | People get white haired at different ages; some men go bald and some do not. The sons of the daughter of a bald man should have a chance of inheriting age-related baldness, although their mother won't express that gene. So I'm allowing here for eight different profiles for age related change, although I'm not yet clear what the exact values would mean. |
 
-That's twenty-nine of our sixty-four bits, leaving plenty for face models, gender 
+That's twenty-nine of our sixty-four bits, leaving plenty for face models, gender and so on.
 
 ### What's not included in the genome
 
