@@ -2,6 +2,8 @@
 
 A clojure library (OK, at this moment it's an app, but that's during development only) to generate character models for games, such that characters who are represented as related to one another will have systematically similar appearance, as creatures of natural species (including humans) do. This is specifically **NOT** simulating genetics on any deep or quasi-scientific level, just experimenting to see how adequate a solution can be achieved with simple code and limited data.
 
+Part of [The Great Game](https://simon-brooke.github.io/the-great-game/codox/index.html) project.
+
 ## Status
 
 Very pre-alpha.
@@ -54,11 +56,17 @@ b. I politely suggest that you might want to examine your own attitudes.
 
 **NOTE:** At this stage none of this works.
 
+#### The Python ecosystem
+
 [MakeHuman](http://www.makehumancommunity.org/) exposes an [API](https://github.com/makehumancommunity/community-plugins-mhapi/blob/master/docs/MHAPI.md) which allows at least many of the morphological changes required by the pseudo-genome to be applied to a human model. 
 
 There's a well regarded library, [libpython-clj](https://www.futurile.net/2020/02/20/python-from-clojure-with-libpython-clj/), which allows calling of Python code from Clojure code. So in theory it should be possible to make this work.
 
 If not, there are other human-model-morphing libraries out there, e.g. [ManuelBastioniLab](https://mb-lab-community.github.io/MB-Lab.github.io/), but they're mainly also in Python. In the worst case, the heavy lifting is in the data, and it might be possible to rewrite the code thatmorphs the data into Clojure. However, development of ManuelBastioniLAB [ceased in 2018](https://www.cgchannel.com/2018/11/manuel-bastioni-to-discontinue-manuel-bastioni-lab/), and although there are forks available on GitHub and elsewhere, none of them seem to be active. 
+
+#### Maud
+
+While things in the Python ecosystem are very polished, getting them to play nicely with Clojure/Java is non-trivial. There's a less-polished but apparently-functional character editor built using jMonkeyEngine frameworks called [Maud](https://github.com/stephengold/Maud). This might be an easier fit.
 
 ## Installation
 
