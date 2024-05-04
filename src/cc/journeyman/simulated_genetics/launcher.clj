@@ -3,7 +3,7 @@
             [jme-clj.core :refer [add-control add-to-root app-settings cam
                                   defsimpleapp fly-cam get-height-map image
                                   image-based-height-map load-height-map
-                                  load-texture material set* start
+                                  load-model load-texture material set* start
                                   terrain-lod-control terrain-quad]]
             [taoensso.telemere :refer [set-min-level! trace!]])
   (:import (com.jme3.texture Texture$WrapMode))
@@ -61,7 +61,12 @@
                         load-height-map)
         patch-size 65
         terrain (terrain-quad "my terrain" patch-size 513
-                              (get-height-map height-map))]
+                              (get-height-map height-map))
+        mat-default (material "Common/MatDefs/Misc/ShowNormals.j3md")
+        model (trace! (load-model "model-prototypes/male.glb"))]
+    (trace! (-> model (set* :material mat-default)
+                (set* :local-translation 0.0 -5.0 -2.0)
+                (add-to-root)))
     (-> mat
         (set* :texture "Alpha"
               (load-texture "jme3/textures/terrain/splat/alphamap.png"))

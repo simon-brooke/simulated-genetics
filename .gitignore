@@ -1,3 +1,4 @@
+/resources/jme3
 /target
 /classes
 /checkouts
@@ -17,3 +18,9 @@ pom.xml.asc
 .hg/
 
 *.so
+
+*.blend*
+
+resources/model-prototypes/*male.glb
+
+resources/model-prototypes/*male.j3o
