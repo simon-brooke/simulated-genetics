@@ -2,20 +2,14 @@
   "Bridge to MakeHuman, in an attempt to use it to generate character models."
   (:require [libpython-clj2.require :refer [require-python]]
             [libpython-clj2.python
-             :refer [as-python as-jvm
-                     ->python ->jvm
-                     get-attr call-attr call-attr-kw
-                     get-item initialize!
-                     run-simple-string
-                     add-module module-dict
-                     import-module
-                     py. py.. py.-
+             :refer [as-python as-jvm ->python ->jvm get-attr call-attr 
+                     call-attr-kw get-item initialize! run-simple-string
+                     add-module module-dict import-module py. py.. py.-
                      python-type
                      ;; dir
                      ]
              :as py]
             [taoensso.telemere :refer [error! trace!]]))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;
@@ -53,3 +47,8 @@
         "from lib.core import G" 
         "G.app.mhapi.internals.getHuman()"
         ]))
+
+(defmacro initialize-makehuman!
+  "For those who don't know how to spell..."
+  [^String mh-path]
+  `(initialise-makehuman! ~mh-path))
