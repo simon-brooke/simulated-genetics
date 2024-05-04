@@ -2,6 +2,8 @@
 
 A clojure library (OK, at this moment it's an app, but that's during development only) to generate character models for games, such that characters who are represented as related to one another will have systematically similar appearance, as creatures of natural species (including humans) do. This is specifically **NOT** simulating genetics on any deep or quasi-scientific level, just experimenting to see how adequate a solution can be achieved with simple code and limited data.
 
+Part of [The Great Game](https://simon-brooke.github.io/the-great-game/codox/index.html) project.
+
 ## Status
 
 Very pre-alpha.

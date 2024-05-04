@@ -1,5 +1,9 @@
 (ns cc.journeyman.simulated-genetics.makehuman-bridge
-  "Bridge to MakeHuman, in an attempt to use it to generate character models."
+  "Bridge to MakeHuman, in an attempt to use it to generate character models.
+   
+   **NOTE**: Currently not under active development. I've failed to get this
+   to work, but, even if I succeeded, it would be a very complex and fragile
+   solution."
   (:require [libpython-clj2.require :refer [require-python]]
             [libpython-clj2.python
              :refer [as-python as-jvm
@@ -15,7 +19,6 @@
                      ]
              :as py]
             [taoensso.telemere :refer [error! trace!]]))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;
@@ -51,5 +54,6 @@
         (format "sys.path.append('%s')" mh-path)
         (format "exec(open('%s/makehuman.py').read())" mh-path)
         "from lib.core import G" 
-        "G.app.mhapi.internals.getHuman()"
+        "G.app.mhapi.internals.getHuman()" 
+        ;; fails here with "AttributeError: 'NoneType' object has no attribute 'mhapi'"
         ]))
