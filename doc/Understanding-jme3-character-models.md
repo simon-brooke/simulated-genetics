@@ -99,6 +99,8 @@ To be fair I don't know what proportion of subclasses of `Control` have skeleton
 
 As there are now a lot of branches to cover, I'm going to concentrate on the `SkinningControl` one, which *seems* to be the current state of the art. I haven't at this stage investigated how `AssetManager.loadModel(String)` determines which classes to instantiate when loading a model, but I'm going to assume that I can coerce my models to be loaded in a non-deprecated form.
 
+(Confirmed: I am getting instances of SkinningControls when I load models).
+
 A [`SkinningControl`](https://javadoc.jmonkeyengine.org/v3.6.1-stable/com/jme3/anim/SkinningControl.html) has a private instance variable `armature`:
 
 ```java
